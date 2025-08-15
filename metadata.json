@@ -1,0 +1,9 @@
+{
+  "name": "Cyberpunk HUD Interface",
+  "description": "A futuristic, modular web application interface featuring a glass morphism cyberpunk aesthetic. It includes a 4-level hierarchical navigation system, real-time data visualization, and an AI-powered tools suite, all built with React and Tailwind CSS.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ],
+  "prompt": ""
+}

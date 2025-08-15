@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "types": ["vite/client"],
+    "typeRoots": ["./node_modules/@types"],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "services/trpc/client.ts",
+    "services/trpc/Provider.tsx",
+    "services/config.ts",
+    "types/app-router.ts",
+    "components/DashboardTest.tsx",
+    "components/CoreTest.tsx",
+    "components/SchoolHubTest.tsx",
+    "components/AITest.tsx",
+    "components/CRMTest.tsx",
+    "vite-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "../backend",
+    "**/*.test.*",
+    "**/*.spec.*"
+  ]
+}

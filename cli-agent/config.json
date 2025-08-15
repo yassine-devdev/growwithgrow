@@ -1,0 +1,32 @@
+{
+  "autoFix": true,
+  "continuousMode": true,
+  "productionTarget": true,
+  "testingEnabled": true,
+  "deploymentEnabled": false,
+  "aiModels": {
+    "primary": "qwen2.5-coder:1.5b-base",
+    "fallback": "llama3.1:8b",
+    "large": "gpt-oss:20b"
+  },
+  "productionChecks": {
+    "errorBoundary": true,
+    "testing": true,
+    "cicd": true,
+    "docker": true,
+    "security": true,
+    "monitoring": true,
+    "performance": true,
+    "pwa": false
+  },
+  "buildTargets": {
+    "minReadinessScore": 0.9,
+    "maxBuildTime": 300,
+    "maxBundleSize": "1MB"
+  },
+  "notifications": {
+    "onComplete": true,
+    "onError": true,
+    "onProgress": false
+  }
+}

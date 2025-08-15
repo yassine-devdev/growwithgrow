@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cyberpunk HUD Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <!-- Video Editor Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Oswald:wght@700&family=Montserrat:wght@700&family=Lobster&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+              roboto: ['Roboto', 'sans-serif'],
+              lora: ['Lora', 'serif'],
+              // Video Editor Fonts
+              poppins: ['Poppins', 'sans-serif'],
+              oswald: ['Oswald', 'sans-serif'],
+              montserrat: ['Montserrat', 'sans-serif'],
+              lobster: ['Lobster', 'cursive'],
+            },
+            colors: {
+              'card-from': 'rgb(7 16 45)',
+              'card-to': 'rgb(58 60 84)',
+              'cyber-bg': '#0a0a1a',
+              'cyber-surface': 'rgba(20, 20, 40, 0.5)',
+              'cyber-border': 'rgba(0, 255, 255, 0.2)',
+              'cyber-cyan': '#00ffff',
+              'cyber-purple': '#a855f7',
+              'cyber-orange': '#f97316',
+              'cyber-glow': 'rgba(0, 255, 255, 0.5)',
+              // VSCode Palette
+              'vsc-bg': '#1e1e1e',
+              'vsc-sidebar': '#252526',
+              'vsc-activity': '#333333',
+              'vsc-tab-inactive': '#2d2d2d',
+              'vsc-tab-active': '#1e1e1e',
+              'vsc-border': '#3c3c3c',
+              'vsc-status': '#007acc',
+              'vsc-accent': '#0e639c',
+              'vsc-text': '#cccccc',
+              'vsc-keyword': '#c586c0',
+              'vsc-string': '#ce9178',
+              'vsc-function': '#dcdcaa',
+              'vsc-type': '#4ec9b0',
+              'vsc-comment': '#6a9955',
+              'vsc-variable': '#9cdcfe',
+              'vsc-number': '#b5cea8',
+              'vsc-tag': '#569cd6',
+              'vsc-attribute': '#9cdcfe',
+            },
+            boxShadow: {
+              'glow-cyan': '0 0 15px rgba(0, 255, 255, 0.6), 0 0 5px rgba(0, 255, 255, 0.8)',
+              'glow-purple': '0 0 15px rgba(168, 85, 247, 0.6), 0 0 5px rgba(168, 85, 247, 0.8)',
+              'glow-orange': '0 0 15px rgba(249, 115, 22, 0.6), 0 0 5px rgba(249, 115, 22, 0.8)',
+            },
+            backdropBlur: {
+              'xl': '24px',
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      /* Custom scrollbar for a more futuristic feel */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0a0a1a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #00ffff;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #00dddd;
+      }
+
+      /* Matrix Background Styles */
+      .matrix-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          perspective: 1500px;
+          background-color: #0a0a1a; /* cyber-bg */
+          overflow: hidden;
+          z-index: -1; /* Place it behind everything */
+      }
+
+      .matrix-grid {
+          width: 100%;
+          height: 100%;
+          background: 
+            linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+            repeating-linear-gradient(
+              45deg,
+              rgba(0, 255, 255, 0.05) 0px 1px,
+              transparent 1px 12px
+            ),
+            repeating-linear-gradient(
+              -45deg,
+              rgba(0, 255, 255, 0.05) 0px 1px,
+              transparent 1px 12px
+            ),
+            radial-gradient(circle at center, #0a0a1a 0%, #000 100%);
+          background-size:
+            28px 28px,
+            28px 28px,
+            50px 50px,
+            50px 50px,
+            cover;
+          border: 1px solid rgba(0, 255, 255, 0.1);
+          box-shadow:
+            inset 0 0 40px rgba(0, 255, 255, 0.1),
+            0 0 60px rgba(0, 255, 255, 0.15);
+          transform-style: preserve-3d;
+          position: relative;
+      }
+
+      .matrix-grid::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(0, 255, 255, 0.4),
+            transparent
+          );
+          animation: borderFlow 6s linear infinite;
+          pointer-events: none;
+          mask:
+            linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+      }
+
+      .matrix-grid::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 160px;
+          height: 160px;
+          background: radial-gradient(
+            circle,
+            rgba(0, 255, 255, 0.15) 0%,
+            transparent 70%
+          );
+          transform: translate(-50%, -50%);
+          animation: pulse 3.5s ease-in-out infinite alternate;
+          z-index: 1;
+      }
+
+      @keyframes borderFlow {
+          0% {
+            background-position: -200% 50%;
+          }
+          100% {
+            background-position: 200% 50%;
+          }
+      }
+
+      @keyframes pulse {
+          0% {
+            transform: translate(-50%, -50%) scale(0.85);
+            opacity: 0.2;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 0.5;
+          }
+      }
+
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fade-in 0.5s ease-out forwards;
+      }
+
+      /* Text Animations for Video Editor */
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes riseUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes typewriter { from { width: 0; } to { width: 100%; } }
+      @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+      @keyframes flicker {
+        0%, 100% { opacity: 1; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de; }
+        50% { opacity: 0.7; text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #ff00de, 0 0 15px #ff00de; }
+      }
+      @keyframes wave {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "recharts": "https://esm.sh/recharts@^3.1.2",
+    "@google/genai": "https://esm.sh/@google/genai@^1.13.0",
+    "react-rnd": "https://esm.sh/react-rnd@^10.5.2",
+    "html-to-image": "https://esm.sh/html-to-image@^1.11.11",
+    "nanoid": "https://esm.sh/nanoid@^5.1.5"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="text-gray-200 font-sans overflow-hidden">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

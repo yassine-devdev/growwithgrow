@@ -1,0 +1,26 @@
+{
+  "name": "grow-your-need-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend service for the comprehensive school management SaaS platform built with Encore.ts",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "encore run",
+    "build": "encore build",
+    "test": "encore test",
+    "deploy": "encore deploy"
+  },
+  "dependencies": {
+    "@trpc/server": "^10.45.2",
+    "zod": "^3.23.8",
+    "ws": "^8.18.0",
+    "@types/ws": "^8.5.12"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
