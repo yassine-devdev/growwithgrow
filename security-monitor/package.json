@@ -1,0 +1,20 @@
+{
+  "name": "security-monitor",
+  "version": "1.0.0",
+  "description": "Security monitoring service for production deployment",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "redis": "^4.6.0",
+    "express": "^4.18.0",
+    "nodemailer": "^6.9.0",
+    "axios": "^1.6.0",
+    "cron": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

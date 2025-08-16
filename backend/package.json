@@ -7,18 +7,34 @@
   "scripts": {
     "dev": "encore run",
     "build": "encore build",
+    "build:prod": "tsc -p tsconfig.prod.json && encore build --prod",
     "test": "encore test",
-    "deploy": "encore deploy"
+    "deploy": "encore deploy",
+    "db:migrate": "node shared/database/cli.js migrate all",
+    "db:migrate:single": "node shared/database/cli.js migrate",
+    "db:rollback": "node shared/database/cli.js rollback",
+    "db:status": "node shared/database/cli.js status",
+    "db:create": "node shared/database/cli.js create",
+    "db:seed": "node shared/database/cli.js seed all development",
+    "db:seed:single": "node shared/database/cli.js seed",
+    "db:verify": "node shared/database/cli.js verify all"
   },
   "dependencies": {
     "@trpc/server": "^10.45.2",
     "zod": "^3.23.8",
     "ws": "^8.18.0",
-    "@types/ws": "^8.5.12"
+    "@types/ws": "^8.5.12",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "dompurify": "^3.0.7",
+    "jsdom": "^23.2.0",
+    "express-validator": "^7.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "@types/dompurify": "^3.0.5",
+    "@types/jsdom": "^21.1.6"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -1,0 +1,47 @@
+{
+  "user": {
+    "name": "Acer",
+    "version": "1.0.0"
+  },
+  "assistant": {
+    "name": "MindFlow",
+    "personality": "You are an AI assistant integrated with local Ollama models. You help with coding, development tasks, and project management. You respond in a professional and helpful manner.",
+    "messages": [],
+    "breakers": [
+      "the task is done.",
+      "the conversation is done."
+    ]
+  },
+  "safeguards": {
+    "timeout": 16,
+    "auto_run": true,
+    "auto_install": true
+  },
+  "paths": {
+    "prompts": "core/prompts"
+  },
+  "config": {
+    "telemetry": false,
+    "ephemeral": false,
+    "verbose": true,
+    "local": true,
+    "dev": false,
+    "conversational": true,
+    "use_ollama": true
+  },
+  "extensions": {
+    "Browser": {
+      "headless": false,
+      "engine": "google"
+    }
+  },
+  "tts": {
+    "enabled": false,
+    "engine": "SystemEngine"
+  },
+  "env": {
+    "OLLAMA_MODEL": "qwen2.5-coder:1.5b-base",
+    "OLLAMA_HOST": "http://localhost:11434",
+    "API_KEY": ""
+  }
+}

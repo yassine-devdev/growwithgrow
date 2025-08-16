@@ -1,0 +1,336 @@
+# 🚀 Cyberpunk Dashboard - Production Ready Rules
+
+## 🎯 PROJECT OVERVIEW
+This is a cutting-edge, full-stack cyberpunk dashboard application built with React, TypeScript, Tailwind CSS, and tRPC. The project features a modular architecture with glass morphism design, AI integration, and comprehensive business tools.
+
+## 🏗️ ARCHITECTURE PRINCIPLES
+
+### Core Architecture
+- **Modular Design**: Each business module (Dashboard, Tools, CRM, etc.) is self-contained
+- **Hierarchical Navigation**: L1 (RightSidebar) → L2 (Module Navigation) → L3/L4 (Section Navigation)
+- **Glass Morphism**: Consistent cyberpunk aesthetic with backdrop-blur and neon glows
+- **Type Safety**: Full TypeScript implementation with tRPC for type-safe APIs
+- **Responsive First**: Mobile-first design that scales to desktop
+
+### File Structure
+```
+src/
+├── components/          # Reusable UI components
+├── modules/            # Business modules (Dashboard, Tools, CRM, etc.)
+├── services/           # API services, tRPC, external integrations
+├── types/              # TypeScript type definitions
+├── constants/          # Application constants and configurations
+├── lib/                # Utility functions and helpers
+└── styles/             # Global styles and Tailwind config
+```
+
+## 🎨 DESIGN SYSTEM
+
+### Color Palette
+- **Primary**: `cyber-cyan` (#00ffff), `cyber-purple` (#a855f7), `cyber-orange` (#f97316)
+- **Background**: `cyber-bg` (#0a0a1a), gradient backgrounds
+- **Borders**: `cyber-border` (rgba(0, 255, 255, 0.2))
+- **Status**: Green (success), Red (error), Yellow (warning)
+
+### Component Patterns
+- **GlassCard**: Base component for glass morphism styling
+- **Navigation**: Consistent button patterns with glow effects
+- **Animations**: Smooth transitions (300ms), hover effects, pulse animations
+- **Typography**: `font-mono` for technical text, `font-bold` for headings
+
+### Styling Guidelines
+- Use `backdrop-blur-sm` for glass effects
+- Apply `shadow-glow-cyan/purple/orange` for neon glows
+- Maintain consistent spacing: `gap-2`, `gap-4`, `p-2`, `p-4`
+- Use `rounded-xl` for cards, `rounded-lg` for buttons
+- Implement `transition-all duration-300` for smooth animations
+
+## 🔧 TECHNICAL REQUIREMENTS
+
+### Frontend Stack
+- **React 18+** with TypeScript
+- **Tailwind CSS** with custom cyberpunk theme
+- **tRPC** for type-safe API communication
+- **Recharts** for data visualization
+- **Lucide React** for icons
+- **class-variance-authority** for component variants
+
+### Backend Requirements
+- **Node.js** with TypeScript
+- **tRPC** server with Zod validation
+- **PostgreSQL** database with Prisma ORM
+- **Redis** for caching and sessions
+- **JWT** for authentication
+- **OpenRouter & Ollama** integration for AI features (cloud and local AI models)
+
+### Development Tools
+- **Vite** for build tooling
+- **ESLint** + **Prettier** for code quality
+- **Husky** for git hooks
+- **Vitest** for testing
+- **pnpm** for package management
+
+## 📱 RESPONSIVE DESIGN RULES
+
+### Mobile First Approach
+- Design for mobile first, then enhance for desktop
+- Use `sm:`, `md:`, `lg:` prefixes consistently
+- Ensure touch targets are at least 44px
+- Maintain readability on small screens
+
+### Navigation Patterns
+- **RightSidebar**: Always visible, same width on all devices
+- **L2 Sidebars**: Only Dashboard uses L2 sidebar pattern
+- **L3/L4 Sidebars**: Internal navigation within sections
+- **Header**: Responsive with collapsible elements
+
+### Layout Consistency
+- Use flexbox for layouts: `flex flex-col` or `flex flex-row`
+- Maintain consistent padding: `p-1 sm:p-2 lg:p-3`
+- Apply proper overflow handling: `overflow-hidden`, `overflow-y-auto`
+
+## 🔒 SECURITY & PERFORMANCE
+
+### Security Requirements
+- Implement proper authentication with JWT
+- Use HTTPS in production
+- Validate all inputs with Zod schemas
+- Implement rate limiting
+- Sanitize user inputs
+- Use environment variables for secrets
+
+### Performance Optimization
+- Implement code splitting for modules
+- Use React.memo for expensive components
+- Optimize images and assets
+- Implement proper caching strategies
+- Use lazy loading for non-critical components
+- Monitor bundle size and optimize
+
+### Error Handling
+- Implement comprehensive error boundaries
+- Use proper try-catch blocks
+- Provide user-friendly error messages
+- Log errors for debugging
+- Implement retry mechanisms for API calls
+
+## 🧪 TESTING STRATEGY
+
+### Testing Requirements
+- **Unit Tests**: Test individual components and functions
+- **Integration Tests**: Test module interactions
+- **E2E Tests**: Test complete user workflows
+- **Accessibility Tests**: Ensure WCAG compliance
+- **Performance Tests**: Monitor loading times and responsiveness
+
+### Testing Tools
+- **Vitest** for unit and integration tests
+- **Playwright** for E2E testing
+- **@testing-library/react** for component testing
+- **MSW** for API mocking
+
+## 🚀 DEPLOYMENT & PRODUCTION
+
+### Environment Setup
+- **Development**: Local development with hot reload
+- **Staging**: Pre-production testing environment
+- **Production**: Live application with monitoring
+
+### Deployment Requirements
+- **Docker** containerization
+- **CI/CD** pipeline with GitHub Actions
+- **Environment variables** management
+- **Database migrations** with Prisma
+- **Health checks** and monitoring
+- **SSL certificates** and HTTPS
+
+### Monitoring & Analytics
+- **Error tracking** with Sentry
+- **Performance monitoring** with Vercel Analytics
+- **User analytics** with privacy compliance
+- **Server monitoring** with uptime checks
+
+## 📋 COMPLETION CHECKLIST
+
+### Frontend Completion
+- [ ] All modules fully functional with proper navigation
+- [ ] Responsive design working on all screen sizes
+- [ ] Accessibility compliance (ARIA labels, keyboard navigation)
+- [ ] Error boundaries implemented
+- [ ] Loading states and skeleton screens
+- [ ] Form validation and error handling
+- [ ] Data visualization components working
+- [ ] Theme consistency across all components
+
+### Backend Completion
+- [ ] tRPC server with all API endpoints
+- [ ] Database schema and migrations
+- [ ] Authentication system
+- [ ] AI integration with OpenRouter & Ollama
+- [ ] File upload and storage
+- [ ] Email notifications
+- [ ] Background job processing
+- [ ] API rate limiting and security
+
+### Production Readiness
+- [ ] Environment configuration
+- [ ] Docker setup
+- [ ] CI/CD pipeline
+- [ ] Database backup strategy
+- [ ] Monitoring and logging
+- [ ] Performance optimization
+- [ ] Security audit
+- [ ] Documentation complete
+
+## 🎯 DEVELOPMENT WORKFLOW
+
+### Code Quality
+- Follow TypeScript strict mode
+- Use meaningful variable and function names
+- Add JSDoc comments for complex functions
+- Maintain consistent code formatting
+- Write self-documenting code
+
+### Git Workflow
+- Use conventional commits
+- Create feature branches for new development
+- Require code reviews before merging
+- Keep commits atomic and focused
+- Write descriptive commit messages
+
+### Documentation
+- Maintain comprehensive README
+- Document API endpoints
+- Create user guides
+- Document deployment procedures
+- Keep architecture decisions recorded
+
+## 🔄 CONTINUOUS IMPROVEMENT
+
+### Regular Tasks
+- Update dependencies regularly
+- Monitor performance metrics
+- Review and refactor code
+- Update documentation
+- Security audits and updates
+
+### Future Enhancements
+- PWA capabilities
+- Offline functionality
+- Advanced AI features
+- Mobile app development
+- Third-party integrations
+
+## ⚡ PERFORMANCE TARGETS
+
+### Loading Times
+- Initial page load: < 2 seconds
+- Module switching: < 500ms
+- API responses: < 1 second
+- Image loading: < 2 seconds
+
+### User Experience
+- Smooth 60fps animations
+- Responsive interactions
+- Intuitive navigation
+- Consistent visual feedback
+- Accessible to all users
+
+## 🛡️ SECURITY CHECKLIST
+
+### Authentication & Authorization
+- [ ] JWT token management
+- [ ] Role-based access control
+- [ ] Session management
+- [ ] Password security
+- [ ] Multi-factor authentication
+
+### Data Protection
+- [ ] Input validation
+- [ ] SQL injection prevention
+- [ ] XSS protection
+- [ ] CSRF protection
+- [ ] Data encryption
+
+### Infrastructure Security
+- [ ] HTTPS enforcement
+- [ ] Security headers
+- [ ] Rate limiting
+- [ ] DDoS protection
+- [ ] Regular security updates
+
+## 📊 ANALYTICS & MONITORING
+
+### User Analytics
+- Page views and navigation
+- Feature usage tracking
+- Performance metrics
+- Error tracking
+- User behavior analysis
+
+### System Monitoring
+- Server health checks
+- Database performance
+- API response times
+- Error rates
+- Resource utilization
+
+## 🎨 UI/UX EXCELLENCE
+
+### Visual Design
+- Maintain cyberpunk aesthetic
+- Ensure visual hierarchy
+- Use consistent spacing
+- Implement smooth animations
+- Provide visual feedback
+
+### User Experience
+- Intuitive navigation
+- Clear call-to-actions
+- Helpful error messages
+- Loading indicators
+- Responsive interactions
+
+### Accessibility
+- WCAG 2.1 AA compliance
+- Keyboard navigation
+- Screen reader support
+- Color contrast ratios
+- Focus management
+
+## 🚀 FINAL DELIVERABLES
+
+### Code Quality
+- Clean, maintainable codebase
+- Comprehensive test coverage
+- Proper error handling
+- Performance optimized
+- Security hardened
+
+### Documentation
+- Complete API documentation
+- User guides and tutorials
+- Deployment instructions
+- Architecture documentation
+- Maintenance procedures
+
+### Production Ready
+- Scalable architecture
+- Monitoring and alerting
+- Backup and recovery
+- Security compliance
+- Performance optimized
+
+---
+
+## 🎯 IMMEDIATE NEXT STEPS
+
+1. **Complete Backend API** with tRPC and database
+2. **Implement Authentication** system
+3. **Add AI Integration** with OpenRouter & Ollama
+4. **Optimize Performance** and loading times
+5. **Add Comprehensive Testing**
+6. **Prepare for Production** deployment
+7. **Document Everything** thoroughly
+
+Remember: This is a cutting-edge, production-ready application. Every decision should prioritize user experience, performance, security, and maintainability.

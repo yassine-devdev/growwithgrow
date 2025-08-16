@@ -1,0 +1,167 @@
+{
+  "table": "permissions",
+  "dependencies": [],
+  "data": [
+    {
+      "id": 1,
+      "name": "users.create",
+      "description": "Create new users",
+      "resource": "users",
+      "action": "create"
+    },
+    {
+      "id": 2,
+      "name": "users.read",
+      "description": "View user information",
+      "resource": "users",
+      "action": "read"
+    },
+    {
+      "id": 3,
+      "name": "users.update",
+      "description": "Update user information",
+      "resource": "users",
+      "action": "update"
+    },
+    {
+      "id": 4,
+      "name": "users.delete",
+      "description": "Delete users",
+      "resource": "users",
+      "action": "delete"
+    },
+    {
+      "id": 5,
+      "name": "schools.create",
+      "description": "Create new schools",
+      "resource": "schools",
+      "action": "create"
+    },
+    {
+      "id": 6,
+      "name": "schools.read",
+      "description": "View school information",
+      "resource": "schools",
+      "action": "read"
+    },
+    {
+      "id": 7,
+      "name": "schools.update",
+      "description": "Update school information",
+      "resource": "schools",
+      "action": "update"
+    },
+    {
+      "id": 8,
+      "name": "schools.delete",
+      "description": "Delete schools",
+      "resource": "schools",
+      "action": "delete"
+    },
+    {
+      "id": 9,
+      "name": "courses.create",
+      "description": "Create new courses",
+      "resource": "courses",
+      "action": "create"
+    },
+    {
+      "id": 10,
+      "name": "courses.read",
+      "description": "View course information",
+      "resource": "courses",
+      "action": "read"
+    },
+    {
+      "id": 11,
+      "name": "courses.update",
+      "description": "Update course information",
+      "resource": "courses",
+      "action": "update"
+    },
+    {
+      "id": 12,
+      "name": "courses.delete",
+      "description": "Delete courses",
+      "resource": "courses",
+      "action": "delete"
+    },
+    {
+      "id": 13,
+      "name": "assignments.create",
+      "description": "Create new assignments",
+      "resource": "assignments",
+      "action": "create"
+    },
+    {
+      "id": 14,
+      "name": "assignments.read",
+      "description": "View assignment information",
+      "resource": "assignments",
+      "action": "read"
+    },
+    {
+      "id": 15,
+      "name": "assignments.update",
+      "description": "Update assignment information",
+      "resource": "assignments",
+      "action": "update"
+    },
+    {
+      "id": 16,
+      "name": "assignments.delete",
+      "description": "Delete assignments",
+      "resource": "assignments",
+      "action": "delete"
+    },
+    {
+      "id": 17,
+      "name": "grades.create",
+      "description": "Create grades",
+      "resource": "grades",
+      "action": "create"
+    },
+    {
+      "id": 18,
+      "name": "grades.read",
+      "description": "View grades",
+      "resource": "grades",
+      "action": "read"
+    },
+    {
+      "id": 19,
+      "name": "grades.update",
+      "description": "Update grades",
+      "resource": "grades",
+      "action": "update"
+    },
+    {
+      "id": 20,
+      "name": "ai.use",
+      "description": "Use AI features",
+      "resource": "ai",
+      "action": "use"
+    },
+    {
+      "id": 21,
+      "name": "ai.admin",
+      "description": "Administer AI settings",
+      "resource": "ai",
+      "action": "admin"
+    },
+    {
+      "id": 22,
+      "name": "analytics.view",
+      "description": "View analytics and reports",
+      "resource": "analytics",
+      "action": "view"
+    },
+    {
+      "id": 23,
+      "name": "system.admin",
+      "description": "System administration",
+      "resource": "system",
+      "action": "admin"
+    }
+  ]
+}

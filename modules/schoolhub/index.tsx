@@ -37,20 +37,7 @@ const SchoolHub: React.FC<SchoolHubProps> = ({ activeSection }) => {
         }
     };
 
-    // Only show L2 sidebar for sections that don't have their own L2 sidebars
-    const showMainL2Sidebar = activeSection === 'School';
-
-    if (showMainL2Sidebar) {
-        return (
-            <div className="flex -m-1 sm:-m-2 lg:-m-3 h-full animate-fade-in">
-                <SchoolHubL2Sidebar />
-                <main className="flex-1 p-1 sm:p-2 lg:p-3 overflow-y-auto h-full">
-                    {renderSection()}
-                </main>
-            </div>
-        );
-    }
-
+    // Remove the L2 sidebar completely - header navigation is sufficient
     return (
         <div className="animate-fade-in -m-1 sm:-m-2 lg:-m-3 h-full">
             {renderSection()}

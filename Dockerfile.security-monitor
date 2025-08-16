@@ -1,0 +1,32 @@
+# Security monitoring service
+FROM node:18-alpine
+
+# Install dependencies
+RUN apk add --no-cache curl
+
+# Create app user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S -D -H -u 1001 -h /app -s /sbin/nologin -G nodejs -g nodejs nodejs
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY security-monitor/package*.json ./
+RUN npm ci --only=production
+
+# Copy source code
+COPY security-monitor/ ./
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:3001/health || exit 1
+
+# Start the service
+CMD ["node", "index.js"]

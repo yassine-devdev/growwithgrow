@@ -4,65 +4,46 @@ import { createWSServer } from '@trpc/server/adapters/ws';
 import { WebSocketServer } from 'ws';
 import { appRouter } from './app-router';
 import { createHTTPContext, createWSContext } from './context';
+import { SecurityMiddleware } from '../middleware/security';
 
-// CORS configuration
-const CORS_ORIGINS = process.env.CORS_ORIGINS?.split(',') || [
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'https://localhost:3000',
-  'https://localhost:5173',
-];
-
-const isValidOrigin = (origin: string | undefined): boolean => {
-  if (!origin) return true; // Allow requests without origin (e.g., mobile apps)
-  return CORS_ORIGINS.includes(origin) || CORS_ORIGINS.includes('*');
-};
+// Security middleware will handle CORS configuration
 
 // Create HTTP handler for tRPC
 const httpHandler = createHTTPServer({
   router: appRouter,
   createContext: createHTTPContext,
   responseMeta({ ctx, paths, type, errors }) {
-    const origin = ctx.req.headers.origin;
+    // Security headers are now handled by SecurityMiddleware
+    // Get headers from security context if available
+    const securityHeaders = ctx.security?.headers || {};
     
-    // Set CORS headers
-    const headers: Record<string, string> = {
-      'Access-Control-Allow-Origin': isValidOrigin(origin) ? (origin || '*') : 'null',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
-      'Access-Control-Allow-Credentials': 'true',
-      'Access-Control-Max-Age': '86400', // 24 hours
-    };
-
-    // Security headers
-    headers['X-Content-Type-Options'] = 'nosniff';
-    headers['X-Frame-Options'] = 'DENY';
-    headers['X-XSS-Protection'] = '1; mode=block';
-    headers['Referrer-Policy'] = 'strict-origin-when-cross-origin';
-
     // Set cache headers for queries
+    const cacheHeaders: Record<string, string> = {};
     if (type === 'query' && errors.length === 0) {
-      headers['Cache-Control'] = 'max-age=60, stale-while-revalidate=300';
+      cacheHeaders['Cache-Control'] = 'max-age=60, stale-while-revalidate=300';
     } else if (type === 'mutation') {
-      headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+      cacheHeaders['Cache-Control'] = 'no-cache, no-store, must-revalidate';
     }
 
-    // Rate limiting headers (would be implemented with actual rate limiter)
-    headers['X-RateLimit-Limit'] = '1000';
-    headers['X-RateLimit-Remaining'] = '999';
-    headers['X-RateLimit-Reset'] = String(Math.floor(Date.now() / 1000) + 3600);
-
-    return { headers };
+    return { 
+      headers: {
+        ...securityHeaders,
+        ...cacheHeaders
+      }
+    };
   },
   onError({ error, type, path, input, ctx, req }) {
-    // Log errors for monitoring
+    // Log errors for monitoring with security context
+    const securityContext = ctx.security?.context;
     console.error(`❌ tRPC Error on ${type} ${path}:`, {
       error: error.message,
       code: error.code,
       userId: ctx?.user?.id,
       input: type === 'mutation' ? '[REDACTED]' : input,
-      userAgent: req.headers['user-agent'],
-      ip: req.headers['x-forwarded-for'] || req.connection?.remoteAddress,
+      userAgent: securityContext?.userAgent,
+      ip: securityContext?.ip,
+      requestId: securityContext?.requestId,
+      securityViolations: ctx.security?.violations?.length || 0,
     });
   },
 });
@@ -75,23 +56,33 @@ export const trpcHandler = api(
     path: "/trpc/*path" 
   },
   async (req) => {
-    // Handle preflight OPTIONS requests
-    if (req.method === 'OPTIONS') {
-      const origin = req.headers?.origin;
+    // Apply security middleware first
+    const securityResult = await SecurityMiddleware.applySecurityMiddleware(req, null);
+    
+    // If security middleware blocked the request, return early
+    if (!securityResult.allowed) {
       return {
-        statusCode: 200,
-        headers: {
-          'Access-Control-Allow-Origin': isValidOrigin(origin) ? (origin || '*') : 'null',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Max-Age': '86400',
-        },
-        body: '',
+        statusCode: securityResult.statusCode || 403,
+        headers: securityResult.headers,
+        body: securityResult.body || JSON.stringify({
+          error: {
+            message: 'Request blocked by security middleware',
+            code: 'SECURITY_VIOLATION'
+          }
+        })
+      };
+    }
+    
+    // Handle preflight OPTIONS requests (already handled by security middleware)
+    if (req.method === 'OPTIONS') {
+      return {
+        statusCode: securityResult.statusCode || 200,
+        headers: securityResult.headers,
+        body: securityResult.body || '',
       };
     }
 
-    // Convert Encore request to Node.js request format
+    // Convert Encore request to Node.js request format with security context
     const nodeReq = {
       method: req.method,
       url: req.url,
@@ -100,6 +91,7 @@ export const trpcHandler = api(
       connection: {
         remoteAddress: req.headers?.['x-forwarded-for'] || 'unknown',
       },
+      security: securityResult, // Add security context to request
     } as any;
 
     let responseBody = '';
@@ -141,7 +133,10 @@ export const trpcHandler = api(
 
       return {
         statusCode: statusCode,
-        headers: responseHeaders,
+        headers: {
+          ...securityResult.headers, // Include security headers
+          ...responseHeaders
+        },
         body: responseBody,
       };
     } catch (error) {
@@ -151,8 +146,7 @@ export const trpcHandler = api(
         statusCode: 500,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': isValidOrigin(req.headers?.origin) ? (req.headers?.origin || '*') : 'null',
-          'Access-Control-Allow-Credentials': 'true',
+          ...securityResult.headers, // Include security headers even on error
         },
         body: JSON.stringify({
           error: {

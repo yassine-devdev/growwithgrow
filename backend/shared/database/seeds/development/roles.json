@@ -1,0 +1,36 @@
+{
+  "table": "roles",
+  "dependencies": [],
+  "data": [
+    {
+      "id": 1,
+      "name": "super_admin",
+      "description": "System super administrator with all permissions",
+      "is_system": true
+    },
+    {
+      "id": 2,
+      "name": "school_admin",
+      "description": "School administrator with school-level permissions",
+      "is_system": true
+    },
+    {
+      "id": 3,
+      "name": "teacher",
+      "description": "Teacher with classroom management permissions",
+      "is_system": true
+    },
+    {
+      "id": 4,
+      "name": "student",
+      "description": "Student with limited read permissions",
+      "is_system": true
+    },
+    {
+      "id": 5,
+      "name": "parent",
+      "description": "Parent with child-related read permissions",
+      "is_system": true
+    }
+  ]
+}

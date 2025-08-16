@@ -2,6 +2,7 @@ import { inferAsyncReturnType } from '@trpc/server';
 import { CreateHTTPContextOptions } from '@trpc/server/adapters/standalone';
 import { CreateWSSContextFnOptions } from '@trpc/server/adapters/ws';
 import { UserRole } from '../shared/types';
+import { SecurityMiddleware, SecurityContext, SecurityViolation } from '../middleware/security';
 
 // Mock user for now - will be replaced with real authentication
 interface User {
@@ -17,6 +18,16 @@ interface User {
 // Context for HTTP requests
 export const createHTTPContext = async (opts: CreateHTTPContextOptions) => {
   const { req, res } = opts;
+  
+  // Create security context
+  const securityContext = SecurityMiddleware.createSecurityContext(req);
+  
+  // Get security information from request (added by adapter)
+  const securityInfo = (req as any).security || {
+    violations: [],
+    headers: {},
+    allowed: true
+  };
   
   // Extract authentication token from headers
   const authHeader = req.headers.authorization;
@@ -35,6 +46,9 @@ export const createHTTPContext = async (opts: CreateHTTPContextOptions) => {
       schoolId: 1,
       isActive: true,
     };
+    
+    // Update security context with user ID
+    securityContext.userId = user.id;
   }
   
   return {
@@ -42,12 +56,21 @@ export const createHTTPContext = async (opts: CreateHTTPContextOptions) => {
     res,
     user,
     token,
+    security: {
+      context: securityContext,
+      violations: securityInfo.violations,
+      headers: securityInfo.headers,
+      allowed: securityInfo.allowed
+    }
   };
 };
 
 // Context for WebSocket connections
 export const createWSContext = async (opts: CreateWSSContextFnOptions) => {
   const { req } = opts;
+  
+  // Create security context for WebSocket
+  const securityContext = SecurityMiddleware.createSecurityContext(req);
   
   // Extract authentication from WebSocket connection
   const token = req.url?.split('token=')[1];
@@ -64,11 +87,20 @@ export const createWSContext = async (opts: CreateWSSContextFnOptions) => {
       schoolId: 1,
       isActive: true,
     };
+    
+    // Update security context with user ID
+    securityContext.userId = user.id;
   }
   
   return {
     user,
     token,
+    security: {
+      context: securityContext,
+      violations: [],
+      headers: {},
+      allowed: true
+    }
   };
 };
 

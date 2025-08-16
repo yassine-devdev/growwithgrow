@@ -1,0 +1,48 @@
+{
+  "table": "contacts",
+  "dependencies": [],
+  "data": [
+    {
+      "id": 1,
+      "first_name": "Michael",
+      "last_name": "Thompson",
+      "email": "michael.thompson@techcorp.com",
+      "phone": "+1-555-0301",
+      "company": "TechCorp Solutions",
+      "job_title": "IT Director",
+      "contact_type": "prospect",
+      "source": "website",
+      "tags": ["enterprise", "technology", "decision-maker"],
+      "notes": "Interested in school management software for their education division",
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "first_name": "Lisa",
+      "last_name": "Rodriguez",
+      "email": "lisa.rodriguez@edudistrict.org",
+      "phone": "+1-555-0302",
+      "company": "Metro Education District",
+      "job_title": "Superintendent",
+      "contact_type": "lead",
+      "source": "referral",
+      "tags": ["public-sector", "large-district", "budget-conscious"],
+      "notes": "Looking for comprehensive solution for 50+ schools",
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "first_name": "David",
+      "last_name": "Chen",
+      "email": "david.chen@privateacademy.edu",
+      "phone": "+1-555-0303",
+      "company": "Elite Private Academy",
+      "job_title": "Principal",
+      "contact_type": "customer",
+      "source": "trade-show",
+      "tags": ["private-school", "premium", "quick-decision"],
+      "notes": "Existing customer, interested in AI features",
+      "is_active": true
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "table": "courses",
+  "dependencies": ["schools", "users"],
+  "data": [
+    {
+      "id": 1,
+      "school_id": 1,
+      "name": "Advanced Mathematics",
+      "code": "MATH401",
+      "description": "Advanced topics in calculus and linear algebra",
+      "teacher_id": 3,
+      "credits": 4,
+      "semester": "Fall",
+      "academic_year": "2024-2025",
+      "is_active": true,
+      "settings": {
+        "prerequisites": ["MATH301"],
+        "textbook": "Advanced Mathematics for Engineers"
+      }
+    },
+    {
+      "id": 2,
+      "school_id": 1,
+      "name": "English Literature",
+      "code": "ENG301",
+      "description": "Study of classic and contemporary literature",
+      "teacher_id": 4,
+      "credits": 3,
+      "semester": "Fall",
+      "academic_year": "2024-2025",
+      "is_active": true,
+      "settings": {
+        "reading_list": ["To Kill a Mockingbird", "1984", "Pride and Prejudice"]
+      }
+    },
+    {
+      "id": 3,
+      "school_id": 1,
+      "name": "Computer Science Fundamentals",
+      "code": "CS101",
+      "description": "Introduction to programming and computer science concepts",
+      "teacher_id": 3,
+      "credits": 4,
+      "semester": "Fall",
+      "academic_year": "2024-2025",
+      "is_active": true,
+      "settings": {
+        "programming_language": "Python",
+        "ide": "VS Code"
+      }
+    }
+  ]
+}

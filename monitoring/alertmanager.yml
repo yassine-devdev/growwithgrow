@@ -1,0 +1,166 @@
+global:
+  smtp_smarthost: '${SMTP_HOST}:${SMTP_PORT}'
+  smtp_from: '${ALERT_FROM_EMAIL}'
+  smtp_auth_username: '${SMTP_USER}'
+  smtp_auth_password: '${SMTP_PASS}'
+  smtp_require_tls: true
+
+# Templates for notifications
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+# Routing configuration
+route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'default'
+  routes:
+    # Critical alerts go to multiple channels
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 5s
+      repeat_interval: 30m
+    
+    # High severity alerts
+    - match:
+        severity: high
+      receiver: 'high-alerts'
+      repeat_interval: 1h
+    
+    # Medium and low severity alerts
+    - match_re:
+        severity: medium|low
+      receiver: 'general-alerts'
+      repeat_interval: 4h
+    
+    # Business alerts
+    - match:
+        component: business
+      receiver: 'business-alerts'
+      repeat_interval: 2h
+    
+    # Infrastructure alerts
+    - match:
+        component: infrastructure
+      receiver: 'infrastructure-alerts'
+      repeat_interval: 1h
+
+# Inhibition rules to prevent spam
+inhibit_rules:
+  # Inhibit low/medium alerts if critical alert is firing
+  - source_match:
+      severity: 'critical'
+    target_match_re:
+      severity: 'medium|low'
+    equal: ['alertname', 'cluster', 'service']
+  
+  # Inhibit medium alerts if high alert is firing
+  - source_match:
+      severity: 'high'
+    target_match:
+      severity: 'medium'
+    equal: ['alertname', 'cluster', 'service']
+
+# Notification receivers
+receivers:
+  - name: 'default'
+    webhook_configs:
+      - url: 'http://backend:4000/api/alerts/webhook'
+        send_resolved: true
+        http_config:
+          bearer_token: '${ALERT_WEBHOOK_TOKEN}'
+
+  - name: 'critical-alerts'
+    # Multiple notification channels for critical alerts
+    email_configs:
+      - to: '${CRITICAL_ALERT_EMAIL}'
+        subject: '🚨 CRITICAL ALERT: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Severity: {{ .Labels.severity }}
+          Instance: {{ .Labels.instance }}
+          Started: {{ .StartsAt }}
+          {{ end }}
+        headers:
+          Priority: 'high'
+    
+    webhook_configs:
+      - url: '${SLACK_WEBHOOK_URL}'
+        send_resolved: true
+        title: '🚨 Critical Alert'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+    
+    webhook_configs:
+      - url: 'http://backend:4000/api/alerts/webhook'
+        send_resolved: true
+        http_config:
+          bearer_token: '${ALERT_WEBHOOK_TOKEN}'
+
+  - name: 'high-alerts'
+    email_configs:
+      - to: '${ALERT_TO_EMAIL}'
+        subject: '⚠️ High Priority Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Severity: {{ .Labels.severity }}
+          Instance: {{ .Labels.instance }}
+          Started: {{ .StartsAt }}
+          {{ end }}
+    
+    webhook_configs:
+      - url: 'http://backend:4000/api/alerts/webhook'
+        send_resolved: true
+
+  - name: 'general-alerts'
+    webhook_configs:
+      - url: 'http://backend:4000/api/alerts/webhook'
+        send_resolved: true
+    
+    # Optional: Send to Slack for general alerts
+    # webhook_configs:
+    #   - url: '${SLACK_WEBHOOK_URL}'
+    #     send_resolved: true
+    #     title: 'Alert Notification'
+
+  - name: 'business-alerts'
+    email_configs:
+      - to: '${BUSINESS_ALERT_EMAIL}'
+        subject: '📊 Business Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          Business metric alert triggered:
+          
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Value: {{ .Annotations.value }}
+          Started: {{ .StartsAt }}
+          {{ end }}
+    
+    webhook_configs:
+      - url: 'http://backend:4000/api/alerts/business-webhook'
+        send_resolved: true
+
+  - name: 'infrastructure-alerts'
+    email_configs:
+      - to: '${INFRASTRUCTURE_ALERT_EMAIL}'
+        subject: '🔧 Infrastructure Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          Infrastructure alert:
+          
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Instance: {{ .Labels.instance }}
+          Started: {{ .StartsAt }}
+          {{ end }}
+    
+    webhook_configs:
+      - url: 'http://backend:4000/api/alerts/webhook'
+        send_resolved: true

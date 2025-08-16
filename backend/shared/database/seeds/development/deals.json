@@ -1,0 +1,57 @@
+{
+  "table": "deals",
+  "dependencies": ["contacts", "users"],
+  "data": [
+    {
+      "id": 1,
+      "contact_id": 1,
+      "title": "TechCorp Education Division Implementation",
+      "description": "Full platform implementation for TechCorp's education division including 5 schools",
+      "value": 125000.00,
+      "stage": "proposal",
+      "probability": 75,
+      "expected_close_date": "2024-03-15",
+      "owner_id": 1,
+      "is_active": true,
+      "metadata": {
+        "schools_count": 5,
+        "implementation_timeline": "6 months",
+        "key_features": ["AI tutoring", "analytics", "parent portal"]
+      }
+    },
+    {
+      "id": 2,
+      "contact_id": 2,
+      "title": "Metro District Platform License",
+      "description": "District-wide license for 50 schools with custom integrations",
+      "value": 750000.00,
+      "stage": "negotiation",
+      "probability": 60,
+      "expected_close_date": "2024-06-30",
+      "owner_id": 1,
+      "is_active": true,
+      "metadata": {
+        "schools_count": 50,
+        "contract_length": "3 years",
+        "special_requirements": ["SSO integration", "custom reporting"]
+      }
+    },
+    {
+      "id": 3,
+      "contact_id": 3,
+      "title": "Elite Academy AI Features Upgrade",
+      "description": "Upgrade existing customer to premium AI features package",
+      "value": 25000.00,
+      "stage": "qualified",
+      "probability": 90,
+      "expected_close_date": "2024-02-28",
+      "owner_id": 1,
+      "is_active": true,
+      "metadata": {
+        "upgrade_type": "AI Premium",
+        "existing_customer": true,
+        "quick_implementation": true
+      }
+    }
+  ]
+}

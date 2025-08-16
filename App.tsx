@@ -19,6 +19,7 @@ import './services/productionCheck'; // Check production readiness
 import Header from './components/Header';
 import RightSidebar from './components/RightSidebar';
 import BottomDock from './components/BottomDock';
+
 import Dashboard from './modules/dashboard/index';
 import Tools from './modules/tools/index';
 import SchoolHub from './modules/schoolhub/index';
@@ -44,6 +45,58 @@ const App: React.FC = () => {
   // State for personal module overlay
   const [activeOverlay, setActiveOverlay] = useState<ModuleType | null>(null);
   const [isPersonalModulesBarVisible, setIsPersonalModulesBarVisible] = useState<boolean>(false);
+
+  // Keyboard navigation support
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Skip if user is typing in an input field
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      switch (event.key) {
+        case 'Escape':
+          // Close overlays or mobile menus
+          if (activeOverlay) {
+            closeOverlay();
+          }
+          break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+          // Quick module navigation (1-8 keys)
+          const moduleIndex = parseInt(event.key) - 1;
+          const modules = Object.values(ModuleType);
+          if (modules[moduleIndex]) {
+            handleSetActiveModule(modules[moduleIndex]);
+          }
+          break;
+        case 'h':
+        case 'H':
+          // Go to Dashboard (Home)
+          handleSetActiveModule(ModuleType.Dashboard);
+          break;
+        case 't':
+        case 'T':
+          // Go to Tools
+          handleSetActiveModule(ModuleType.Tools);
+          break;
+        case 's':
+        case 'S':
+          // Go to School Hub
+          handleSetActiveModule(ModuleType.SchoolHub);
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [activeOverlay]);
 
   const activeModuleData = MODULES.find(m => m.id === activeModule) || MODULES[0];
 

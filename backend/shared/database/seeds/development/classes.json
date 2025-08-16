@@ -1,0 +1,63 @@
+{
+  "table": "classes",
+  "dependencies": ["courses"],
+  "data": [
+    {
+      "id": 1,
+      "course_id": 1,
+      "name": "Advanced Mathematics - Section A",
+      "section": "A",
+      "teacher_id": 3,
+      "room": "Math Lab 101",
+      "schedule": {
+        "days": ["Monday", "Wednesday", "Friday"],
+        "time": "09:00-10:30",
+        "timezone": "America/Chicago"
+      },
+      "max_students": 25,
+      "is_active": true,
+      "settings": {
+        "attendance_required": true,
+        "late_policy": "10% deduction per day"
+      }
+    },
+    {
+      "id": 2,
+      "course_id": 2,
+      "name": "English Literature - Section A",
+      "section": "A",
+      "teacher_id": 4,
+      "room": "English 201",
+      "schedule": {
+        "days": ["Tuesday", "Thursday"],
+        "time": "11:00-12:30",
+        "timezone": "America/Chicago"
+      },
+      "max_students": 30,
+      "is_active": true,
+      "settings": {
+        "discussion_based": true,
+        "participation_grade": 20
+      }
+    },
+    {
+      "id": 3,
+      "course_id": 3,
+      "name": "Computer Science Fundamentals - Section A",
+      "section": "A",
+      "teacher_id": 3,
+      "room": "Computer Lab 301",
+      "schedule": {
+        "days": ["Monday", "Wednesday", "Friday"],
+        "time": "14:00-15:30",
+        "timezone": "America/Chicago"
+      },
+      "max_students": 20,
+      "is_active": true,
+      "settings": {
+        "lab_required": true,
+        "programming_assignments": true
+      }
+    }
+  ]
+}

@@ -34,11 +34,8 @@ const SystemSettings: React.FC<SystemSettingsProps> = ({ activeSection }) => {
     };
 
     return (
-        <div className="flex -m-1 sm:-m-2 lg:-m-3 h-full animate-fade-in">
-            <SystemSettingsL2Sidebar activeSection={activeSection} setActiveSection={() => {}} />
-            <main className="flex-1 p-1 sm:p-2 lg:p-3 overflow-y-auto h-full">
-                {renderSection()}
-            </main>
+        <div className="animate-fade-in -m-1 sm:-m-2 lg:-m-3 h-full">
+            {renderSection()}
         </div>
     );
 };

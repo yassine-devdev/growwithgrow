@@ -1,0 +1,75 @@
+{
+  "table": "campaigns",
+  "dependencies": ["users"],
+  "data": [
+    {
+      "id": 1,
+      "name": "Back to School 2024",
+      "description": "Comprehensive marketing campaign targeting schools preparing for the new academic year",
+      "campaign_type": "seasonal",
+      "status": "active",
+      "start_date": "2024-06-01",
+      "end_date": "2024-09-30",
+      "budget": 50000.00,
+      "spent": 15000.00,
+      "target_audience": {
+        "segments": ["K-12 schools", "private academies", "charter schools"],
+        "geography": ["North America"],
+        "decision_makers": ["principals", "superintendents", "IT directors"]
+      },
+      "settings": {
+        "channels": ["email", "social-media", "webinars", "trade-shows"],
+        "key_messages": ["AI-powered learning", "streamlined administration", "parent engagement"],
+        "success_metrics": ["leads_generated", "demo_requests", "trial_signups"]
+      },
+      "owner_id": 1,
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "name": "AI Education Summit Sponsorship",
+      "description": "Sponsorship and presence at major AI in Education conference",
+      "campaign_type": "event",
+      "status": "completed",
+      "start_date": "2024-03-01",
+      "end_date": "2024-03-15",
+      "budget": 25000.00,
+      "spent": 24500.00,
+      "target_audience": {
+        "segments": ["education technology leaders", "researchers", "innovators"],
+        "geography": ["Global"],
+        "decision_makers": ["CTOs", "innovation directors", "researchers"]
+      },
+      "settings": {
+        "channels": ["conference-booth", "speaking-sessions", "networking"],
+        "key_messages": ["cutting-edge AI", "research partnerships", "innovation leadership"],
+        "success_metrics": ["booth_visitors", "demo_requests", "partnership_inquiries"]
+      },
+      "owner_id": 1,
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "name": "Digital Transformation Webinar Series",
+      "description": "Monthly webinar series on digital transformation in education",
+      "campaign_type": "content",
+      "status": "active",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31",
+      "budget": 15000.00,
+      "spent": 8000.00,
+      "target_audience": {
+        "segments": ["education administrators", "IT professionals", "teachers"],
+        "geography": ["North America", "Europe"],
+        "decision_makers": ["principals", "IT directors", "curriculum directors"]
+      },
+      "settings": {
+        "channels": ["webinars", "email-marketing", "social-media", "blog"],
+        "key_messages": ["thought leadership", "best practices", "practical solutions"],
+        "success_metrics": ["webinar_attendance", "content_downloads", "email_signups"]
+      },
+      "owner_id": 1,
+      "is_active": true
+    }
+  ]
+}

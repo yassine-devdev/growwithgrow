@@ -1,0 +1,45 @@
+{
+  "table": "schools",
+  "dependencies": ["users"],
+  "data": [
+    {
+      "id": 1,
+      "name": "Greenwood High School",
+      "school_type": "high",
+      "address": "123 Education Street",
+      "city": "Springfield",
+      "state": "IL",
+      "country": "USA",
+      "postal_code": "62701",
+      "phone": "+1-555-0200",
+      "email": "info@greenwood.edu",
+      "website": "https://greenwood.edu",
+      "principal_id": 2,
+      "is_active": true,
+      "settings": {
+        "academic_year": "2024-2025",
+        "grading_scale": "A-F",
+        "timezone": "America/Chicago"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Springfield Elementary",
+      "school_type": "elementary",
+      "address": "456 Learning Lane",
+      "city": "Springfield",
+      "state": "IL",
+      "country": "USA",
+      "postal_code": "62702",
+      "phone": "+1-555-0201",
+      "email": "info@springfield-elem.edu",
+      "website": "https://springfield-elem.edu",
+      "is_active": true,
+      "settings": {
+        "academic_year": "2024-2025",
+        "grading_scale": "1-4",
+        "timezone": "America/Chicago"
+      }
+    }
+  ]
+}

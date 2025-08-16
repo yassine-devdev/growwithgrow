@@ -1,0 +1,223 @@
+# Artillery load testing configuration
+# Tests API performance under various load conditions
+
+config:
+  target: 'http://localhost:3001'
+  phases:
+    # Warm-up phase
+    - duration: 30
+      arrivalRate: 1
+      name: "Warm-up"
+    
+    # Ramp-up phase
+    - duration: 60
+      arrivalRate: 1
+      rampTo: 10
+      name: "Ramp-up"
+    
+    # Sustained load phase
+    - duration: 120
+      arrivalRate: 10
+      name: "Sustained load"
+    
+    # Peak load phase
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 50
+      name: "Peak load"
+    
+    # Cool-down phase
+    - duration: 30
+      arrivalRate: 50
+      rampTo: 1
+      name: "Cool-down"
+
+  # Global configuration
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+      User-Agent: 'Artillery Load Test'
+  
+  # Performance thresholds
+  ensure:
+    # 95% of requests should complete within 2 seconds
+    - p95: 2000
+    # 99% of requests should complete within 5 seconds
+    - p99: 5000
+    # Error rate should be less than 1%
+    - maxErrorRate: 1
+    # Median response time should be under 500ms
+    - median: 500
+
+  # Plugins
+  plugins:
+    metrics-by-endpoint:
+      useOnlyRequestNames: true
+    
+    # Memory and CPU monitoring
+    cloudwatch:
+      region: us-east-1
+      
+  # Variables for dynamic data
+  variables:
+    testEmails:
+      - "loadtest1@example.com"
+      - "loadtest2@example.com"
+      - "loadtest3@example.com"
+      - "loadtest4@example.com"
+      - "loadtest5@example.com"
+    
+    testMessages:
+      - "Hello, this is a load test message"
+      - "Can you help me with a simple question?"
+      - "What is the weather like today?"
+      - "Tell me a joke"
+      - "Explain quantum physics briefly"
+
+scenarios:
+  # Authentication flow testing
+  - name: "Authentication Flow"
+    weight: 20
+    flow:
+      # Register new user
+      - post:
+          url: "/api/auth/register"
+          name: "Register User"
+          json:
+            email: "{{ $randomString() }}@loadtest.com"
+            password: "LoadTest123!"
+            firstName: "Load"
+            lastName: "Test"
+            role: "student"
+          capture:
+            - json: "$.data.token"
+              as: "authToken"
+      
+      # Login with credentials
+      - post:
+          url: "/api/auth/login"
+          name: "Login User"
+          json:
+            email: "{{ testEmails[$randomInt(0, 4)] }}"
+            password: "LoadTest123!"
+          capture:
+            - json: "$.data.token"
+              as: "loginToken"
+      
+      # Get user profile
+      - get:
+          url: "/api/auth/me"
+          name: "Get Profile"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+
+  # AI Chat flow testing
+  - name: "AI Chat Flow"
+    weight: 40
+    flow:
+      # Login first
+      - post:
+          url: "/api/auth/login"
+          name: "Login for Chat"
+          json:
+            email: "{{ testEmails[$randomInt(0, 4)] }}"
+            password: "LoadTest123!"
+          capture:
+            - json: "$.data.token"
+              as: "chatToken"
+      
+      # Send AI chat message
+      - post:
+          url: "/api/ai/chat"
+          name: "Send Chat Message"
+          headers:
+            Authorization: "Bearer {{ chatToken }}"
+          json:
+            message: "{{ testMessages[$randomInt(0, 4)] }}"
+            provider: "openrouter"
+            model: "gpt-3.5-turbo"
+            temperature: 0.7
+      
+      # Get AI models
+      - get:
+          url: "/api/ai/models"
+          name: "Get AI Models"
+          headers:
+            Authorization: "Bearer {{ chatToken }}"
+      
+      # Get usage stats
+      - get:
+          url: "/api/ai/usage"
+          name: "Get Usage Stats"
+          headers:
+            Authorization: "Bearer {{ chatToken }}"
+
+  # Dashboard and data retrieval
+  - name: "Dashboard Flow"
+    weight: 30
+    flow:
+      # Login
+      - post:
+          url: "/api/auth/login"
+          name: "Login for Dashboard"
+          json:
+            email: "{{ testEmails[$randomInt(0, 4)] }}"
+            password: "LoadTest123!"
+          capture:
+            - json: "$.data.token"
+              as: "dashToken"
+      
+      # Get dashboard KPIs
+      - get:
+          url: "/api/dashboard/kpis"
+          name: "Get Dashboard KPIs"
+          headers:
+            Authorization: "Bearer {{ dashToken }}"
+      
+      # Get user growth data
+      - get:
+          url: "/api/dashboard/user-growth"
+          name: "Get User Growth"
+          headers:
+            Authorization: "Bearer {{ dashToken }}"
+      
+      # Get sales chart data
+      - get:
+          url: "/api/dashboard/sales-chart"
+          name: "Get Sales Chart"
+          headers:
+            Authorization: "Bearer {{ dashToken }}"
+
+  # Admin operations (lower weight due to restricted access)
+  - name: "Admin Operations"
+    weight: 10
+    flow:
+      # Admin login
+      - post:
+          url: "/api/auth/login"
+          name: "Admin Login"
+          json:
+            email: "admin@e2e.test"
+            password: "TestPass123!"
+          capture:
+            - json: "$.data.token"
+              as: "adminToken"
+      
+      # Get provider status
+      - get:
+          url: "/api/ai/providers/status"
+          name: "Get Provider Status"
+          headers:
+            Authorization: "Bearer {{ adminToken }}"
+      
+      # Test provider connectivity
+      - post:
+          url: "/api/ai/providers/test"
+          name: "Test Provider"
+          headers:
+            Authorization: "Bearer {{ adminToken }}"
+          json:
+            provider: "openrouter"
+
+# Custom functions for data generation
+processor: "./tests/performance/processor.js"
